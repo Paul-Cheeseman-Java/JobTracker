@@ -1,0 +1,18 @@
+#Don't send compiled Java files
+*.class
+*.properties
+/target/**
+
+#Don't send Eclipse files
+#https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
