@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +31,61 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 
 @Controller
+@EnableScheduling
 public class TestController {
 
+	
+	//@Scheduled(fixedDelay = 5000)
+	public void scheduleFixedDelayTask() {
+	    System.out.println("Fixed delay task - " + System.currentTimeMillis() / 5000);
+
+		   WebClient client = new WebClient();
+		   client.getOptions().setCssEnabled(false);
+		   client.getOptions().setJavaScriptEnabled(false);
+		   try {
+			   
+			 //String searchUrl = "https://www.indeed.co.uk/jobs?q=Junior+Developer&l=Fareham&radius=5&fromage=7";
+			   String searchUrl = "https://www.indeed.co.uk/jobs?q=Junior+Developer&l=Fareham&radius=5";
+			 
+		     HtmlPage page = client.getPage(searchUrl);
+		     List<DomNode> items = page.querySelectorAll(".jobsearch-SerpJobCard");
+
+		     
+		     if(items.isEmpty()){
+		       System.out.println("No items found !");
+		     }else{
+		    	 
+		    	 for(DomNode htmlItem : items){
+		    		 String title = htmlItem.querySelector(".title") == null ? "Not provided" : htmlItem.querySelector(".title").asText();
+		    		 String company = htmlItem.querySelector(".company") == null ? "Not provided" : htmlItem.querySelector(".company").asText();
+		    		 String location = htmlItem.querySelector(".location") == null ? "Not provided" : htmlItem.querySelector(".location").asText();
+		    		 String salary = htmlItem.querySelector(".salarySnippet") == null ? "Not provided" : htmlItem.querySelector(".salarySnippet").asText();
+		    		 String summary = htmlItem.querySelector(".summary") == null ? "Not provided" : htmlItem.querySelector(".summary").asText();
+		    		 String date = htmlItem.querySelector(".date") == null ? "Not provided" : htmlItem.querySelector(".date").asText();
+
+		    	 
+		    		 //ADD INTO OBJECT USING SETTERS RATHER THAN PRINT OUT
+		    	 
+		    		 System.out.println("title: " +title);
+		    		 System.out.println("company: " +company);
+		    		 System.out.println("location: " +location);
+		    		 System.out.println("salary: " +salary);
+		    		 System.out.println("summary: " +summary);
+		    		 System.out.println("date: " +date);
+		    		 System.out.println("-----------------------------");
+		     		}
+		     	}  
+			   
+		   }catch(Exception e){
+		     e.printStackTrace();
+		   }
+
+	
+	}
+	
+	
 	   @GetMapping("/Indeed")
-	   public String getIndeedJobs(RestTemplate restTemplate,  Model model, Principal principal) {
+	   public String getIndeedJobs() {
 			
 		   WebClient client = new WebClient();
 		   client.getOptions().setCssEnabled(false);
@@ -102,10 +155,25 @@ public class TestController {
 		    	 //results-posted-at
 		    	 //job-description
 		    	 for(DomNode htmlItem : items){
-	    		 
-		    		 String title = htmlItem.querySelector(".job-title") == null ? "Not provided" : htmlItem.querySelector(".job-title").asText();
 
-		    		 System.out.println("Title: " +title);
+		    		 String title = htmlItem.querySelector(".job-title") == null ? "Not provided" : htmlItem.querySelector(".job-title").asText();
+		    		 //String company = htmlItem.querySelector(".company") == null ? "Not provided" : htmlItem.querySelector(".company").asText();
+		    		 String location = htmlItem.querySelector(".results-job-location") == null ? "Not provided" : htmlItem.querySelector(".results-job-location").asText();
+		    		 String salary = htmlItem.querySelector(".results-salary") == null ? "Not provided" : htmlItem.querySelector(".results-salary").asText();
+		    		 String summary = htmlItem.querySelector(".job-description") == null ? "Not provided" : htmlItem.querySelector(".job-description").asText();
+		    		 String date = htmlItem.querySelector(".results-posted-at") == null ? "Not provided" : htmlItem.querySelector(".results-posted-at").asText();
+
+
+		    		 //ADD INTO OBJECT USING SETTERS RATHER THAN PRINT OUT
+			    	 
+		    		 System.out.println("title: " +title);
+		    		 //System.out.println("company: " +company);
+		    		 System.out.println("location: " +location);
+		    		 System.out.println("salary: " +salary);
+		    		 System.out.println("summary: " +summary);
+		    		 System.out.println("date: " +date);
+		    		 System.out.println("-----------------------------");
+
 		    		 
 		    	 }
 		     }  
@@ -128,7 +196,7 @@ public class TestController {
 		   client.getOptions().setJavaScriptEnabled(false);
 		   try {
 			   
-			   String searchUrl = "https://www.cv-library.co.uk/junior-developer-jobs-in-fareham?permanent=true&distance=10&posted=7&us=1";
+			   String searchUrl = "https://www.cv-library.co.uk/junior-developer-jobs-in-fareham?permanent=true&distance=30&posted=7&us=1";
 			 
 			   HtmlPage page = client.getPage(searchUrl);
 			   List<DomNode> items = page.querySelectorAll(".job__main");
@@ -148,9 +216,24 @@ public class TestController {
 				   
 				   for(DomNode htmlItem : items){
 	    		 
-		    		 String title = htmlItem.querySelector(".job__title") == null ? "Not provided" : htmlItem.querySelector(".job__title").asText();
+			    		 String title = htmlItem.querySelector(".job__title") == null ? "Not provided" : htmlItem.querySelector(".job__title").asText();
+			    		 //String company = htmlItem.querySelector(".company") == null ? "Not provided" : htmlItem.querySelector(".company").asText();
+			    		 String location = htmlItem.querySelector(".job__details-value location") == null ? "Not provided" : htmlItem.querySelector(".job__details-value location").asText();
+			    		 String salary = htmlItem.querySelector(".job__details-value salary") == null ? "Not provided" : htmlItem.querySelector(".job__details-value salary").asText();
+			    		 String summary = htmlItem.querySelector(".job__description") == null ? "Not provided" : htmlItem.querySelector(".job__description").asText();
+			    		 String date = htmlItem.querySelector(".data-jd-posted") == null ? "Not provided" : htmlItem.querySelector(".data-jd-posted").asText();
 
-		    		 System.out.println("Title: " +title);
+
+			    		 //ADD INTO OBJECT USING SETTERS RATHER THAN PRINT OUT
+				    	 
+			    		 System.out.println("title: " +title);
+			    		 //System.out.println("company: " +company);
+			    		 System.out.println("location: " +location);
+			    		 System.out.println("salary: " +salary);
+			    		 System.out.println("summary: " +summary);
+			    		 System.out.println("date: " +date);
+			    		 System.out.println("-----------------------------");
+
 		    		 
 		    	 }
 		     }  
@@ -164,6 +247,10 @@ public class TestController {
 			return "home";
 	   }
 
+	   //CWJobs
+	   //TotalJobs
+	   //Monster
+	   
 	   
 	   
 	   
