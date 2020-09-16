@@ -1,8 +1,7 @@
 # JobTracker
+***Under development***
 
 ##### General info
-Under development
-
 This is a demo app/project to help be explore using screenscraping, consuming API's and integrating Java with the charting library Chart.js.
 
 The application will search jobs sites and pull in data which meets set parameters. The data will be stored within a database to enable trending information which will be presented through graphs.
