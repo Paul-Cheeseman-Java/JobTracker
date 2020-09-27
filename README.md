@@ -6,6 +6,8 @@ This is a demo app/project to help be explore using screenscraping, consuming AP
 
 The application will search jobs sites and pull in data which meets set parameters. The data will be stored within a database to enable trending information which will be presented through graphs.
 
+This demo project is under development.
+
 ##### Features
 * n
 * n

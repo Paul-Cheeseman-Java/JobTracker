@@ -10,6 +10,7 @@ public class Results {
 	public Results() {
 	}
 	
+	/* Results list specific for REED job site */
 	public Results(List<JobReed> results) {
 		this.results = results;
 	}
